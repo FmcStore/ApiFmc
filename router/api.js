@@ -65,6 +65,31 @@ router.get("/ai/chatgpt", async (req, res) => {
   }
 });
 // Pastikan Axios sudah di-install (npm install axios)
+router.get("/ai/blackbox", async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json(messages.query);
+
+  try {
+    const response = await axios.get(
+      `https://api.siputzx.my.id/api/ai/blackboxai?content=${encodeURIComponent(query)}`
+    );
+    
+    if (!response.data || response.data.status !== true || !response.data.data) {
+      return res.status(404).json(messages.notRes);
+    }
+
+    res.json({
+      status: true,
+      developer: dev,
+      result: {
+        message: response.data.data
+      }
+    });
+  } catch (e) {
+    console.error("Error fetching from Blackbox API:", e);
+    res.status(500).json(messages.error);
+  }
+});
 
 router.get("/ai/gptlogic", async (req, res) => {
   const { query, prompt } = req.query;
