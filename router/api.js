@@ -1,5 +1,6 @@
 const express = require("express");
 const danz = require("d-scrape");
+const axios = require("axios");
 const router = express.Router();
 const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
@@ -35,7 +36,7 @@ const messages = {
 };
 
 // AI Routes
-router.get("/ai/chatgpt", async (req, res) => {
+/*router.get("/ai/chatgpt", async (req, res) => {
   const { query } = req.query;
   if (!query) return res.status(400).json(messages.query);
 
@@ -52,8 +53,39 @@ router.get("/ai/chatgpt", async (req, res) => {
   } catch (e) {
     res.status(500).json(messages.error);
   }
-});
+});*/
 
+// Tambahkan impor axios di bagian atas
+
+// Ganti route /ai/chatgpt dengan kode berikut
+router.get("/ai/chatgpt", async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json(messages.query);
+
+  try {
+    // Panggil API anabot
+    const response = await axios.get(
+      `https://anabot.my.id/api/ai/chatgpt?prompt=${encodeURIComponent(query)}&apikey=freeApikey`
+    );
+    
+    // Pastikan respon valid
+    if (!response.data || !response.data.data?.result?.chat) {
+      return res.status(404).json(messages.notRes);
+    }
+
+    // Sesuaikan dengan format API kita
+    res.json({
+      status: true,
+      developer: dev,
+      result: {
+        message: response.data.data.result.chat
+      }
+    });
+  } catch (e) {
+    console.error("Error fetching from anabot:", e);
+    res.status(500).json(messages.error);
+  }
+});
 router.get("/ai/gptlogic", async (req, res) => {
   const { query, prompt } = req.query;
   if (!query) return res.status(400).json(messages.query);
