@@ -105,54 +105,6 @@ const swaggerDocument = {
         },
       },
     },
-      "/api/ai/blackbox": {
-    get: {
-      tags: ["AI"],
-      summary: "Get response from Blackbox AI",
-      parameters: [
-        {
-          in: "query",
-          name: "query",
-          schema: {
-            type: "string"
-          },
-          required: true,
-          description: inQuery
-        }
-      ],
-      responses: {
-        200: {
-          description: "Result successfully returned",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  status: {
-                    type: "boolean",
-                    example: true
-                  },
-                  developer: {
-                    type: "string",
-                    example: config.options.developer
-                  },
-                  result: {
-                    type: "object",
-                    properties: {
-                      message: {
-                        type: "string",
-                        example: "Hello! How can I assist you today?"
-                      }, 
-                    }, 
-                  }, 
-                }, 
-              }, 
-            }, 
-          }, 
-        }, 
-      }, 
-    }, 
-  },// Perhatikan: Tidak ada koma di akhir endpoint terakhir
     "/api/ai/gptlogic": {
       get: {
         tags: ["AI"],
@@ -211,6 +163,55 @@ const swaggerDocument = {
         },
       },
     },
+    // TAMBAHAN ENDPOINT BLACKBOX DI SINI
+    "/api/ai/blackbox": {
+      get: {
+        tags: ["AI"],
+        summary: "Get response from Blackbox AI",
+        parameters: [
+          {
+            in: "query",
+            name: "query",
+            schema: {
+              type: "string"
+            },
+            required: true,
+            description: inQuery
+          }
+        ],
+        responses: {
+          200: {
+            description: "Result successfully returned",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: {
+                      type: "boolean",
+                      example: true
+                    },
+                    developer: {
+                      type: "string",
+                      example: config.options.developer
+                    },
+                    result: {
+                      type: "object",
+                      properties: {
+                        message: {
+                          type: "string",
+                          example: "Hello! How can I assist you today?"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "x-request-time": new Date().toISOString(),
 };
