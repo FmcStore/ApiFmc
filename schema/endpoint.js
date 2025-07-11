@@ -142,17 +142,17 @@ const swaggerDocument = {
                       message: {
                         type: "string",
                         example: "Hello! How can I assist you today?"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }// Perhatikan: Tidak ada koma di akhir endpoint terakhir
+                      }, 
+                    }, 
+                  }, 
+                }, 
+              }, 
+            }, 
+          }, 
+        }, 
+      }, 
+    }, 
+  },// Perhatikan: Tidak ada koma di akhir endpoint terakhir
 },
     "/api/ai/gptlogic": {
       get: {
