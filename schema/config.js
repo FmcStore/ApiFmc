@@ -1,5 +1,5 @@
 const options = {
-  name: "HitamAPIs",
+  name: "FmcAPIs",
   developer: "@FmcDevloper",
   port: 3000,
   webName: "FmcApi Playground",
