@@ -9,7 +9,7 @@ const options = {
 };
 
 const host = {
-  BASE_URL: "https://api-flax-chi-68.vercel.app", // Ganti dengan URL yang sesuai
+  BASE_URL: "https://Apifmc.com", // Ganti dengan URL yang sesuai
   // Contoh: https://domain.com
 };
 
