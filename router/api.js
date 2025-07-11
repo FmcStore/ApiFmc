@@ -64,6 +64,7 @@ router.get("/ai/chatgpt", async (req, res) => {
     res.status(500).json(messages.error);
   }
 });
+// Pastikan Axios sudah di-install (npm install axios)
 
 router.get("/ai/gptlogic", async (req, res) => {
   const { query, prompt } = req.query;
@@ -74,11 +75,44 @@ router.get("/ai/gptlogic", async (req, res) => {
       .json({ status: 400, developer: dev, result: "Please input prompt!" });
 
   try {
-    const data = await danz.ai.gptLogic(query, prompt);
-    if (!data) return res.status(404).json(messages.notRes);
-    res.json({ status: true, developer: dev, result: data });
+    // Panggil API eksternal menggunakan Axios
+    const externalApiUrl = `https://api.fasturl.link/aillm/gpt-4o`;
+    const response = await axios.get(externalApiUrl, {
+      params: { ask: query, style: prompt }, // Axios otomatis encode URL
+      timeout: 10000, // Timeout 10 detik (opsional)
+    });
+
+    // Jika API eksternal merespons tapi tidak valid
+    if (!response.data || !response.data.result) {
+      return res.status(404).json(messages.notRes);
+    }
+
+    // Format respons sesuai struktur API Anda
+    const data = {
+      status: true,
+      developer: dev,
+      result: response.data.result,
+    };
+
+    res.json(data);
   } catch (e) {
-    res.status(500).json(messages.error);
+    console.error("Error calling external API:", e.message);
+    
+    // Handle error spesifik dari Axios
+    if (e.response) {
+      // Jika API eksternal mengembalikan error (misal: 404, 500)
+      res.status(500).json(messages.error);
+    } else if (e.request) {
+      // Jika request tidak terkirim (misal: timeout)
+      res.status(503).json({ 
+        status: 503, 
+        developer: dev, 
+        result: "External API request failed (timeout/unreachable)" 
+      });
+    } else {
+      // Error lainnya (misal: config Axios salah)
+      res.status(500).json(messages.error);
+    }
   }
 });
 
