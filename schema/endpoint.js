@@ -153,7 +153,6 @@ const swaggerDocument = {
       }, 
     }, 
   },// Perhatikan: Tidak ada koma di akhir endpoint terakhir
-},
     "/api/ai/gptlogic": {
       get: {
         tags: ["AI"],
