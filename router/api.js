@@ -36,56 +36,35 @@ const messages = {
 };
 
 // AI Routes
-/*router.get("/ai/chatgpt", async (req, res) => {
-  const { query } = req.query;
-  if (!query) return res.status(400).json(messages.query);
-
-  try {
-    const data = await danz.ai.ChatGpt(query);
-    if (!data) return res.status(404).json(messages.notRes);
-    res.json({
-      status: true,
-      developer: dev,
-      result: {
-        message: data,
-      },
-    });
-  } catch (e) {
-    res.status(500).json(messages.error);
-  }
-});*/
-
-// Tambahkan impor axios di bagian atas
-
-// Ganti route /ai/chatgpt dengan kode berikut
 router.get("/ai/chatgpt", async (req, res) => {
   const { query } = req.query;
   if (!query) return res.status(400).json(messages.query);
 
   try {
-    // Panggil API anabot
+    // Panggil API baru
     const response = await axios.get(
-      `https://anabot.my.id/api/ai/chatgpt?prompt=${encodeURIComponent(query)}&apikey=freeApikey`
+      `https://api.fasturl.link/aillm/gpt-4o?ask=${encodeURIComponent(query)}`
     );
     
-    // Pastikan respon valid
-    if (!response.data || !response.data.data?.result?.chat) {
+    // Validasi respon
+    if (!response.data || !response.data.result) {
       return res.status(404).json(messages.notRes);
     }
 
-    // Sesuaikan dengan format API kita
+    // Sesuaikan format respon
     res.json({
       status: true,
       developer: dev,
       result: {
-        message: response.data.data.result.chat
+        message: response.data.result
       }
     });
   } catch (e) {
-    console.error("Error fetching from anabot:", e);
+    console.error("Error fetching from FastURL API:", e);
     res.status(500).json(messages.error);
   }
 });
+
 router.get("/ai/gptlogic", async (req, res) => {
   const { query, prompt } = req.query;
   if (!query) return res.status(400).json(messages.query);
